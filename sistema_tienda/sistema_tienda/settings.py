@@ -123,5 +123,41 @@ STATIC_URL = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+JAZZMIN_SETTINGS = {
+    'site_title': 'Anais Store',
+    'site_header': 'Anais Store',
+
+    # Title on the brand (19 chars max) (defaults to current_admin_site.site_header if absent or None)
+    "site_brand": "Anis Store",
+
+    # Logo to use for your site, must be present in static files, used for brand on top left
+    "site_logo": "store/img/cajas.png",
+
+    # Welcome text on the login screen
+    "welcome_sign": "Inicio de sesion: Anais Store",
+
+    # Copyright on the footer
+    "copyright": "Anais S.A",
+
+    ############
+    # Top Menu #
+    ############
+
+    "related_modal_active": False,
+    
+
+    "icons": {
+        "auth": "fas fa-users-cog",
+        "auth.user": "fas fa-user",
+        "auth.Group": "fas fa-users",
+        "store.Producto": "fas fa-boxes",
+        "store.Marca": "fas fa-tags",
+        "store.Categoria": "fas fa-list",
+        "empleado.Empleado": "fas fa-address-card",
+        "comun.TipoTelefono": "fas fa-phone",
+    },
+}

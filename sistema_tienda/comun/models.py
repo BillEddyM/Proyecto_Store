@@ -46,4 +46,4 @@ class TipoTelefono(models.Model):
     class Meta:
         db_table = 'tipo_telefono'
         verbose_name = 'Tipo Telefono'
-        verbose_name_plural = 'Tipos de Telefonos'
+        verbose_name_plural = 'Telefonos'
