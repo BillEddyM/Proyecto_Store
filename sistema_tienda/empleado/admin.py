@@ -1,12 +1,13 @@
 from django.contrib import admin
 from .models import *
+from import_export.admin import ExportActionMixin
 
 class TelefonoEmpleadoInline(admin.TabularInline):
     model = TelefonoEmpleado
     extra = 0
     autocomplete_fields = ['tipo'] #BUSQUEDA SOBRE EL CAMPO
 
-class EmpleadoAdmin(admin.ModelAdmin):
+class EmpleadoAdmin(ExportActionMixin, admin.ModelAdmin):
     inlines = [TelefonoEmpleadoInline]
     actions = ['inactivar', 'activar'] #registro de Acciones
     search_fields = ['nombre', 'apellido']

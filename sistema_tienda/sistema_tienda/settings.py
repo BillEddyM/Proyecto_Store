@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'jazzmin', 
+    'import_export',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -41,6 +42,7 @@ INSTALLED_APPS = [
     'store',
     'comun',
     'empleado',
+
 ]
 
 MIDDLEWARE = [
@@ -159,5 +161,9 @@ JAZZMIN_SETTINGS = {
         "store.Categoria": "fas fa-list",
         "empleado.Empleado": "fas fa-address-card",
         "comun.TipoTelefono": "fas fa-phone",
+        "store.Venta": "fas fa-cart-plus",
+        #<i class="fa-sharp fa-solid fa-cart-shopping"></i>
     },
 }
+
+IMPORT_EXPORT_USE_TRANSACTIONS = True
