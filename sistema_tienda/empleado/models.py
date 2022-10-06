@@ -15,8 +15,8 @@ class TelefonoEmpleado(models.Model):
     Empleado = models.ForeignKey(Empleado, on_delete=models.CASCADE)
     numero = models.CharField('telefono', max_length=12)
     tipo = models.ForeignKey(
-        TipoTelefono, verbose_name='Tipo Telefono', related_name='TelEmpleado', on_delete=models.CASCADE
-    )
+        TipoTelefono, verbose_name='Tipo Telefono', 
+        related_name='TelEmpleado', on_delete=models.CASCADE)
 
     def __str__(self):
         return "%s %s" % (self.Empleado, self.numero)

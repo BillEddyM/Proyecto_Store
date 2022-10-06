@@ -2,22 +2,23 @@ from django.db import models
 from django.forms import ValidationError
 from empleado.models import *; 
 from import_export import resources
+from django.utils.safestring import mark_safe
 # Create your models here.
 
 class Categoria(models.Model):
     categoria= models.CharField('nombre', max_length=35, unique=True)
 
     class Meta():
-        db_table = 'Categoria'
+        db_table  = 'Categoria'
         verbose_name = 'Categoria'
         verbose_name_plural = 'Categorias'
 
     def __str__(self):
         return self.categoria
 
+#_______________________________ M A R C A  _________________________________--
 class Marca(models.Model):
     marca= models.CharField('nombre', max_length=35, unique=True)
-
     class Meta():
         db_table = 'Marca'
         verbose_name = 'Marca'
@@ -26,13 +27,24 @@ class Marca(models.Model):
     def __str__(self):
         return self.marca
 
+class Talla(models.Model):
+    talla= models.CharField('Talla', max_length=35, unique=True)
+
+    class Meta():
+        db_table = 'Talla'
+        verbose_name = 'Talla'
+        verbose_name_plural = 'Tallas'
+
+    def __str__(self):
+        return self.talla
+
 class Producto(models.Model):
     nombre= models.CharField('nombre', max_length=35, unique=True)
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
     marca = models.ForeignKey(Marca, on_delete=models.CASCADE)
-    talla = models.CharField('talla', max_length=35, unique=True)
+    talla = models.ForeignKey(Talla, on_delete=models.CASCADE)
     descripcion = models.TextField('descripcion', max_length=255)
-    precio = models.DecimalField('precio', max_digits=8, decimal_places=2)
+    precio= models.DecimalField('precio', max_digits=8, decimal_places=2)
     stock = models.PositiveIntegerField('stock')
     fecha_ingreso = models.DateField('fecha de ingreso')
     estado = models.BooleanField('disponible', default=True)
@@ -54,8 +66,11 @@ class Producto(models.Model):
     def __str__(self):
         return "%s | Q %s | Stock: %s" % (self.nombre, self.precio, self.stock)
 
+
+#____________________________________ V E N T A ___________________________________________________
 class Venta(models.Model):
     nitcliente = models.CharField(verbose_name='nitcliente', max_length=10)
+    nombre_cliente = models.CharField('talla', max_length=40)
     empleado = models.ForeignKey(Empleado, verbose_name='Empleado', on_delete=models.CASCADE)
     fecha_venta= models.DateTimeField(auto_now_add=True)
     total = models.DecimalField('total', max_digits=10, decimal_places=2, default=0.00)
@@ -86,17 +101,17 @@ class DetalleVenta(models.Model):
         return "%s %s" % (self.venta, self.producto)
 
     def clean(self):
-        if self.cantidad <= self.producto.stock:
+        if self.cantidad <= self.producto.stock: #Stock cubre venta
             self.producto.stock -= self.cantidad
             self.subtotal = self.producto.precio * self.cantidad
         else:
-            raise ValidationError('STOCK INSUFICIENTE')
+            raise ValidationError('STOCK INSUFICIENTE')#Stock menor a peticion
     
     def save(self, **kwargs):
         self.sub_total = self.producto.precio * self.cantidad
         super(DetalleVenta, self).save()
         self.venta.save()
-        self.producto.save()
+        self.producto.save() # actualizar stock del producto
     
     class Meta:
         db_table = 'venta_detalle'
