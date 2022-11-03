@@ -39,7 +39,7 @@ class Talla(models.Model):
         return self.talla
 
 class Producto(models.Model):
-    nombre= models.CharField('nombre', max_length=35, unique=True)
+    nombre = models.CharField('nombre', max_length=50)
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
     marca = models.ForeignKey(Marca, on_delete=models.CASCADE)
     talla = models.ForeignKey(Talla, on_delete=models.CASCADE)
@@ -51,7 +51,7 @@ class Producto(models.Model):
 
     def save(self, **kwargs):
         if self.stock == 0:
-            self.estado = False
+            self.estado = False #cuando no hallan existencias estada no disponible 
             super(Producto,self).save()
         else:
             self.estado = True
@@ -62,15 +62,17 @@ class Producto(models.Model):
         db_table = 'Producto'
         verbose_name = 'Producto'
         verbose_name_plural = 'Productos'
+        unique_together = ('nombre', 'talla') #para que solo exista un producto con una una sola talla 
+        
 
     def __str__(self):
-        return "%s | Q %s | Stock: %s" % (self.nombre, self.precio, self.stock)
+        return "%s | Q %s | TALLA: %s| Stock: %s" % (self.nombre, self.precio, self.talla, self.stock)
 
 
 #____________________________________ V E N T A ___________________________________________________
 class Venta(models.Model):
     nitcliente = models.CharField(verbose_name='nitcliente', max_length=10)
-    nombre_cliente = models.CharField('talla', max_length=40)
+    nombre_cliente = models.CharField('nombre cliente', max_length=40)
     empleado = models.ForeignKey(Empleado, verbose_name='Empleado', on_delete=models.CASCADE)
     fecha_venta= models.DateTimeField(auto_now_add=True)
     total = models.DecimalField('total', max_digits=10, decimal_places=2, default=0.00)

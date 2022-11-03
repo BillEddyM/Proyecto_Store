@@ -2,11 +2,23 @@ from django.contrib import admin
 from .models import *
 from import_export.admin import ExportActionMixin
 
+from import_export.admin import ExportActionModelAdmin, ImportExportMixin, ImportMixin
+from import_export.resources import ModelResource
+
+
 #  ____________________ ADMIN PRODUCTO ____________________________________
-class ProductoAdmin(ExportActionMixin, admin.ModelAdmin):
+
+class ProductoResource(ModelResource):
+
+    class Meta:
+        model = Producto
+        fields = ['id', 'nombre', 'marca__marca', 'categoria', 'talla','precio', 'stock', 'descripcion', 'fecha_ingreso']
+
+class ProductoAdmin(ImportExportMixin, admin.ModelAdmin):
     search_fields = ['nombre','categoria', 'talla', 'marca']
     list_display = ['nombre', 'marca', 'categoria', 'talla','precio', 'stock', 'descripcion', 'fecha_ingreso', 'estado']
     list_filter = ['categoria', 'marca', 'talla' , 'precio', 'estado']
+    resource_classes = [ProductoResource]
 
     fieldsets = [
         ('Datos del Producto', {
@@ -47,4 +59,3 @@ admin.site.register(Producto, ProductoAdmin )
 admin.site.register(Categoria)
 admin.site.register(Venta, VentaAdmin)
 admin.site.register(Talla)
-

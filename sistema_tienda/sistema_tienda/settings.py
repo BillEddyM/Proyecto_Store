@@ -78,11 +78,14 @@ WSGI_APPLICATION = 'sistema_tienda.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'db_store',
+        'USER': 'postgres',
+        'PASSWORD': 'quintareal10',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
@@ -127,6 +130,37 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+JAZZMIN_UI_TWEAKS = {
+    "navbar_small_text": False,
+    "footer_small_text": False,
+    "body_small_text": False,
+    "brand_small_text": False,
+    "brand_colour": False,
+    "accent": "accent-navy",
+    "navbar": "navbar-white navbar-light",
+    "no_navbar_border": False,
+    "navbar_fixed": False,
+    "layout_boxed": False,
+    "footer_fixed": False,
+    "sidebar_fixed": False,
+    "sidebar": "sidebar-dark-danger",
+    "sidebar_nav_small_text": False,
+    "sidebar_disable_expand": False,
+    "sidebar_nav_child_indent": False,
+    "sidebar_nav_compact_style": False,
+    "sidebar_nav_legacy_style": False,
+    "sidebar_nav_flat_style": False,
+    "theme": "united",
+    "dark_mode_theme": None,
+    "button_classes": {
+        "primary": "btn-outline-primary",
+        "secondary": "btn-outline-secondary",
+        "info": "btn-outline-info",
+        "warning": "btn-outline-warning",
+        "danger": "btn-outline-danger",
+        "success": "btn-outline-success"
+    }
+}
 
 
 JAZZMIN_SETTINGS = {
@@ -164,6 +198,38 @@ JAZZMIN_SETTINGS = {
         "store.Venta": "fas fa-cart-plus",
         "store.Talla": "fas fa-receipt",
     },
-}
+
+     "topmenu_links": [
+
+        # Url that gets reversed (Permissions can be added)
+        {"name": "Home",  "url": "admin:index", "permissions": ["auth.view_user"]},
+
+
+        # model admin to link to (Permissions checked against model)
+        {"model": "auth.User"},
+
+        #TOP MENUS 
+        {"app": "comun"},
+        {"app": "empleado"},
+        {"app": "store"},
+    ],
+
+     "usermenu_links": [
+        {"model": "auth.user"}
+    ],
+    "show_ui_builder": True,
+
+    # Place our choice model admin link and our custom link first within the books app (Note: custom link name used for order key)
+    "order_with_respect_to": [ "store", "store.categoria", "store.marca", "store.talla", "store.producto","empleado", "comun", "auth"], # ORDENAR SIDE BAR
+    "related_modal_active": True,  #VENTANAS EMERGENte
+
+    "site_logo": "img/logo.png",
+
+    # Logo to use for your site, must be present in static files, used for login form logo (defaults to site_logo)
+    "login_logo": None,
+    
+    }
+
+
 
 IMPORT_EXPORT_USE_TRANSACTIONS = True
