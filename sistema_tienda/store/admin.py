@@ -40,15 +40,17 @@ class dVentasInline(ExportActionMixin, admin.TabularInline):
 
 class VentaAdmin(ExportActionMixin, admin.ModelAdmin):
     inlines = [dVentasInline]
-    search_fields = ['fecha_venta', 'empleado', 'nitcliente']
+    search_fields = ['fecha_venta', 'empleado', 'nitcliente', 'nombre_cliente']
     list_display = ['id', 'nitcliente', 'nombre_cliente', 'empleado', 'fecha_venta', 'total']
     list_filter = ['fecha_venta', 'empleado', 'nitcliente']
     date_hierarchy = 'fecha_venta' #ordernar por fecha
+    readonly_fields = ['total']
 
     fieldsets = [
         ('Datos de venta', {
             'fields': (
-                ('nitcliente', 'nombre_cliente', 'empleado'),
+                ('nitcliente', 'nombre_cliente'),
+                ('empleado'),
                 ('total')
                 )
         }),
